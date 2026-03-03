@@ -824,7 +824,7 @@ def _scrape_google_maps_sync(category: str, city: str, zone: Optional[str] = Non
     last_error: Optional[str] = None
     started = time.time()
 
-    lead_historyies= _load_lead_history()
+    lead_history = _load_lead_history()
     disable_history_dedup = False
     if _demo_city and _demo_max_results > 0:
         disable_history_dedup = True
