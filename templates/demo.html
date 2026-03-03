@@ -1,0 +1,298 @@
+﻿<!doctype html>
+<html lang="it" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOLAR SNIPER - Energy Edition</title>
+    <meta name="description" content="SOLAR SNIPER - Energy Edition" />
+
+    <script>
+      window.onerror = () => true;
+      try {
+        Object.defineProperty(Object.prototype, 'valueAsNumber', { get: () => 0 });
+      } catch (e) {}
+    </script>
+
+    <style>
+      :root {
+        --bg: #05070a;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel2: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.10);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(148, 163, 184, 0.95);
+        --green: #00e676;
+        --red: #ef4444;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: radial-gradient(1200px 800px at 50% -10%, rgba(0, 230, 118, 0.14), transparent 60%),
+          radial-gradient(1000px 600px at 10% 10%, rgba(56, 189, 248, 0.08), transparent 60%),
+          radial-gradient(900px 600px at 90% 20%, rgba(168, 85, 247, 0.06), transparent 60%),
+          var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        width: min(1200px, 95vw);
+        margin: 0 auto;
+        padding: 64px 16px 80px;
+      }
+      .kicker {
+        text-align: center;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      h1 {
+        margin: 18px 0 10px;
+        text-align: center;
+        font-size: clamp(34px, 4.5vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        font-weight: 800;
+        color: var(--green);
+        text-shadow: 0 0 26px rgba(0, 230, 118, 0.14);
+      }
+      .desc {
+        margin: 0 auto;
+        max-width: 760px;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+      .grid {
+        margin-top: 36px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      @media (min-width: 860px) {
+        .grid { grid-template-columns: 1.1fr 0.9fr; }
+      }
+      .panel {
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, var(--panel2), var(--panel));
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.2), 0 10px 32px rgba(0,0,0,0.42);
+        backdrop-filter: blur(10px);
+      }
+      .panelTitle {
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .field input {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        padding: 12px 12px;
+        outline: none;
+      }
+      .field input:focus {
+        border-color: rgba(0,230,118,0.45);
+        box-shadow: 0 0 0 3px rgba(0,230,118,0.12);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border-radius: 14px;
+        padding: 12px 14px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        cursor: pointer;
+        transition: transform 120ms ease, background 120ms ease, box-shadow 120ms ease;
+        user-select: none;
+      }
+      .btn:hover {
+        background: rgba(255,255,255,0.07);
+        box-shadow: 0 0 18px rgba(0,230,118,0.18);
+      }
+      .btn:active { transform: translateY(1px); }
+      .btnPrimary {
+        border-color: rgba(0,230,118,0.28);
+        background: rgba(0,230,118,0.08);
+      }
+      .btnPrimary:hover { background: rgba(0,230,118,0.12); }
+      .note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: rgba(148, 163, 184, 0.92);
+      }
+      .status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--muted);
+        min-height: 18px;
+      }
+      .status.error { color: rgba(239, 68, 68, 0.95); }
+      .status.ok { color: rgba(0, 230, 118, 0.95); }
+      .results {
+        margin-top: 12px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding-top: 12px;
+      }
+      .resultRow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        border-radius: 14px;
+      }
+      .badge {
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.12);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .badgeGreen {
+        border-color: rgba(0,230,118,0.3);
+        color: rgba(0,230,118,0.95);
+        background: rgba(0,230,118,0.08);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="kicker">PREMIUM AUDIT</div>
+      <h1>SOLAR SNIPER - Energy Edition</h1>
+      <p class="desc">Analisi Energivora e Metratura Tetto Satellitare.</p>
+
+      <div class="grid">
+        <div class="panel">
+          <div class="panelTitle">Start Audit</div>
+          <div class="row">
+            <div class="field">
+              <label for="city">Città (DEMO)</label>
+              <input id="city" name="city" placeholder="Milano o Roma" value="Milano" />
+            </div>
+            <div class="field">
+              <label for="category">Categoria (DEMO)</label>
+              <input id="category" name="category" placeholder="Es. Fonderie" value="Fonderie" />
+            </div>
+            <div>
+              <button id="startBtn" class="btn btnPrimary" type="button">Start Audit</button>
+              <div class="note">La DEMO risponde sempre con un job id valido per evitare errori.</div>
+              <div id="status" class="status"></div>
+              <div id="results" class="results" style="display:none"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panelTitle">Demo Output</div>
+          <div style="margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.6;">
+            Risultati di esempio per la consegna.
+          </div>
+          <div style="margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div class="badge badgeGreen">STABLE</div>
+            <div class="badge">NO NEXT.JS</div>
+            <div class="badge">NO CRASH</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const statusEl = document.getElementById('status');
+        const resultsEl = document.getElementById('results');
+        const startBtn = document.getElementById('startBtn');
+
+        function setStatus(text, cls) {
+          statusEl.textContent = text || '';
+          statusEl.className = 'status' + (cls ? ' ' + cls : '');
+        }
+
+        function renderResults(results) {
+          resultsEl.innerHTML = '';
+          if (!Array.isArray(results) || results.length === 0) {
+            resultsEl.style.display = 'none';
+            return;
+          }
+          resultsEl.style.display = 'block';
+          for (const r of results) {
+            const row = document.createElement('div');
+            row.className = 'resultRow';
+            const name = document.createElement('div');
+            name.textContent = String(r.name || 'Azienda');
+            const roof = document.createElement('div');
+            roof.textContent = String(r.roof_sqm != null ? r.roof_sqm + ' m²' : '');
+            roof.style.color = 'rgba(0,230,118,0.95)';
+            row.appendChild(name);
+            row.appendChild(roof);
+            resultsEl.appendChild(row);
+          }
+        }
+
+        startBtn.addEventListener('click', async function () {
+          try {
+            setStatus('Avvio DEMO…', '');
+            resultsEl.style.display = 'none';
+
+            const city = (document.getElementById('city').value || '').toString();
+            const category = (document.getElementById('category').value || '').toString();
+
+            const r = await fetch('/api/scrape', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ city, category }),
+            });
+            const data = await r.json();
+
+            if (!data || !data.job_id) {
+              setStatus('Risposta DEMO non valida.', 'error');
+              return;
+            }
+
+            if (data.success === false) {
+              setStatus(String(data.error || 'Input non valido.'), 'error');
+            } else {
+              setStatus('Job creato: ' + data.job_id, 'ok');
+            }
+
+            const jr = await fetch('/api/jobs/' + encodeURIComponent(data.job_id));
+            const jd = await jr.json();
+            renderResults((jd || {}).results || []);
+          } catch (e) {
+            setStatus('Errore DEMO. Riprova.', 'error');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
