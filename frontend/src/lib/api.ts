@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 export const BACKEND_URL: string = process.env.NEXT_PUBLIC_BACKEND_URL || "";
-=======
-export const BACKEND_URL: string = typeof window !== "undefined" ? window.location.origin : "";
->>>>>>> private/main
 
 export type JobState = "queued" | "running" | "done" | "error";
 
